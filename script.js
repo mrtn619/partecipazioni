@@ -1,14 +1,24 @@
-
 window.addEventListener("DOMContentLoaded", () => {
     const v = document.getElementById("video-open-booster");
     if (!v) return;
 
+    const isIOS = /iP(hone|od|ad)/.test(navigator.userAgent) || 
+                  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1); // iPad moderni
+
+    v.src = isIOS 
+        ? "img/PARTECIPAZIONI/booster.MOV" 
+        : "img/PARTECIPAZIONI/boosterpack-opening.webm";
+
     v.muted = true;
+    v.setAttribute("autoplay", ""); // fondamentale per il permesso iOS
+    v.load();
+
     const forzaFrame = () => {
         v.play().then(() => {
             v.pause();
             v.currentTime = 0;
-        }).catch(() => {
+        }).catch((err) => {
+            console.log("play bloccato:", err); // utile per debug
             document.addEventListener("touchstart", () => {
                 v.play().then(() => { v.pause(); v.currentTime = 0; });
             }, { once: true });
