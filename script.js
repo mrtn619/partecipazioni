@@ -10,6 +10,7 @@ window.addEventListener("DOMContentLoaded", () => {
         : "img/PARTECIPAZIONI/boosterpack-opening.webm";
 
     v.muted = true;
+    v.setAttribute("autoplay","");
     v.load();
 
     const forzaFrame = () => {
