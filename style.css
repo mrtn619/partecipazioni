@@ -17,7 +17,7 @@ body {
 } 
 
 .container img {
-    position: fixed;
+    position: absolute;
     width: auto;
     height: auto;
     max-width: 85%;   /* sicurezza: non sfora mai il contenitore su schermi piccolissimi */
