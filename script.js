@@ -17,10 +17,7 @@ window.addEventListener("DOMContentLoaded", () => {
             v.pause();
             v.currentTime = 0;
         }).catch((err) => {
-            console.log("play bloccato:", err); // utile per debug
-            document.addEventListener("touchstart", () => {
-                v.play().then(() => { v.pause(); v.currentTime = 0; });
-            }, { once: true });
+            console.log("play bloccato:", err);
         });
     };
 

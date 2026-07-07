@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    height: 100vh;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,6 +13,7 @@ body {
     height: 100%;
     margin: 0 auto;
     text-align: center;
+    position: fixed;
     display: contents;
 } 
 
@@ -52,10 +53,8 @@ body {
 
  .fullpage {
     position: fixed !important; 
-    top: 0;
-    left: 0;
-    /*top: 2.1%;
-    left: 0.25%; */
+    top: 2.1%;
+    left: 0.25%;
     width: 100%;
     height: 100% ;
     object-fit: contain;   /* mantiene le proporzioni, niente crop */
