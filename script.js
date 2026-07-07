@@ -11,24 +11,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     v.muted = true;
     v.load();
-
-    // const forzaFrame = () => {
-    //     v.play().then(() => {
-    //         v.pause();
-    //         v.currentTime = 0;
-    //     }).catch((err) => {
-    //         console.log("play bloccato:", err);
-    //         document.addEventListener("touchstart", () => {
-    //             v.play().then(() => { v.pause(); v.currentTime = 0; });
-    //         }, { once: true });
-    //     });
-    // };
-
-    // if (v.readyState >= 2) {
-    //     forzaFrame();
-    // } else {
-    //     v.addEventListener("loadeddata", forzaFrame, { once: true });
-    // }
 });
 
 const container = document.getElementById("card-container");
@@ -43,19 +25,21 @@ container.addEventListener("click", (event) => {
 
     if(clicked === lastCard && container.children.length > 1) {
 
-        if(clicked.tagName === "VIDEO") {
-            clicked.play();
-            return;
-        }
+        if(clicked.tagName === "VIDEO") return;
 
-        clicked.classList.add("img-sfogliata");
+        if(clicked.id!="poster") {
+            clicked.classList.add("img-sfogliata");
+        }
 
         setTimeout(() => {
             clicked.remove();
 
             const newLastCard = container.lastElementChild;
 
-            if (newLastCard.id === "penultima") {
+            if(newLastCard && newLastCard.tagName === "VIDEO"){
+                newLastCard.play();
+
+            } else if (newLastCard.id === "penultima") {
                 newLastCard.classList.add("carta-in-entrata");
 
                 newLastCard.addEventListener("animationend", () => {
