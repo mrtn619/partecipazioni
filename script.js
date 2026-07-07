@@ -10,23 +10,25 @@ window.addEventListener("DOMContentLoaded", () => {
         : "img/PARTECIPAZIONI/boosterpack-opening.webm";
 
     v.muted = true;
-    v.setAttribute("autoplay","");
     v.load();
 
-    const forzaFrame = () => {
-        v.play().then(() => {
-            v.pause();
-            v.currentTime = 0;
-        }).catch((err) => {
-            console.log("play bloccato:", err);
-        });
-    };
+    // const forzaFrame = () => {
+    //     v.play().then(() => {
+    //         v.pause();
+    //         v.currentTime = 0;
+    //     }).catch((err) => {
+    //         console.log("play bloccato:", err);
+    //         document.addEventListener("touchstart", () => {
+    //             v.play().then(() => { v.pause(); v.currentTime = 0; });
+    //         }, { once: true });
+    //     });
+    // };
 
-    if (v.readyState >= 2) {
-        forzaFrame();
-    } else {
-        v.addEventListener("loadeddata", forzaFrame, { once: true });
-    }
+    // if (v.readyState >= 2) {
+    //     forzaFrame();
+    // } else {
+    //     v.addEventListener("loadeddata", forzaFrame, { once: true });
+    // }
 });
 
 const container = document.getElementById("card-container");
