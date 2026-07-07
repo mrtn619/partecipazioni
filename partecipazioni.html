@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Partecipazioni Giada e Martina</title>
+    <style>
+       
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #9EC6E6,#FFFFFF);
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    text-align: center;
+    position: fixed;
+    display: contents;
+} 
+
+.container img {
+    position: absolute;
+    width: auto;
+    height: auto;
+    max-width: 85%;   /* sicurezza: non sfora mai il contenitore su schermi piccolissimi */
+    max-height: 48.30365%;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+}
+
+.container.evento-avvenuto img {
+    opacity: 1;
+}
+
+.container video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.img-sfogliata {
+    transform: translateX(-500px) rotate(-30deg) scale(0.8);
+    opacity: 0; 
+    pointer-events: none;
+    z-index: 100;
+}
+
+ .fullpage {
+    position: fixed !important; 
+    top: 2.1%;
+    left: 0.25%;
+    width: 100%;
+    height: 100% ;
+    object-fit: contain;   /* mantiene le proporzioni, niente crop */
+    border-radius: 0;      /* opzionale: niente angoli arrotondati a schermo intero */
+} 
+
+
+
+@keyframes entrata-carta {
+    from {
+        transform: scale(1);
+        opacity: 0.4;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.carta-in-entrata {
+    animation: entrata-carta 0.5s ease-out;
+}
+
+#conferma, #penultima {
+    opacity: 0;
+}
+
+    </style>
+</head>
+<body> 
+    <div class="container" id="card-container">
+            <img id="conferma" src="img/PARTECIPAZIONI/Online Conferma.png">
+            <img id="penultima" src="img/PARTECIPAZIONI/5 - Bimbi.png">
+            <img src="img/PARTECIPAZIONI/4 - Timeline.png">
+            <img src="img/PARTECIPAZIONI/3 - Quando.png">
+            <img src="img/PARTECIPAZIONI/2 - Dove.png">
+            <img src="img/PARTECIPAZIONI/1 - Presentazione.png">
+            <video id="video-open-booster" src="img/PARTECIPAZIONI/boosterpack-opening.webm" class="fullpage" type="video/webm" muted playsinline></video>
+    </div>
+<script>
+
+
+const container = document.getElementById("card-container");
+const video = document.getElementById("video-open-booster");
+const boostercontainer = document.getElementById("video-container");
+const timeout = 300;
+
+container.addEventListener("click", (event) => {
+    const clicked = event.target;
+    const lastCard = container.lastElementChild;
+    const conferma = document.getElementById("conferma");
+
+    if(clicked === lastCard && container.children.length > 1) {
+
+        if(clicked.tagName === "VIDEO") {
+            clicked.play();
+            return;
+        }
+
+        clicked.classList.add("img-sfogliata");
+
+        setTimeout(() => {
+            clicked.remove();
+
+            const newLastCard = container.lastElementChild;
+
+            if (newLastCard.id === "penultima") {
+                newLastCard.classList.add("carta-in-entrata");
+
+                newLastCard.addEventListener("animationend", () => {
+                    newLastCard.classList.remove("carta-in-entrata");
+                    newLastCard.style.opacity = 1;
+                    conferma.style.opacity = 1;
+                }, {once: true});
+            }
+
+        }, timeout);
+    } else if (clicked === lastCard && conferma) {
+        window.location.href="https://forms.gle/W3KtA7xf38JEan7x5";
+    }
+});
+
+video.addEventListener("ended", () => {
+
+        video.remove();
+
+    const imgs = container.querySelectorAll("img:not(#conferma):not(#penultima)");
+    
+    imgs.forEach(img => {
+        img.style.transition = "none";
+        img.style.opacity = "1";
+        img.style.pointerEvents = "auto";
+    });
+
+
+
+
+    void container.offsetHeight;
+
+    imgs.forEach(img => {
+        img.style.transition = "";
+    });
+});
+</script>
+
+
+</body>
+</html>
