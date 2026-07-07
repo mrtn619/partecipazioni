@@ -1,29 +1,85 @@
+
+window.addEventListener("DOMContentLoaded", () => {
+    const v = document.getElementById("video-open-booster");
+    if (!v) return;
+
+    v.muted = true;
+    const forzaFrame = () => {
+        v.play().then(() => {
+            v.pause();
+            v.currentTime = 0;
+        }).catch(() => {
+            document.addEventListener("touchstart", () => {
+                v.play().then(() => { v.pause(); v.currentTime = 0; });
+            }, { once: true });
+        });
+    };
+
+    if (v.readyState >= 2) {
+        forzaFrame();
+    } else {
+        v.addEventListener("loadeddata", forzaFrame, { once: true });
+    }
+});
+
 const container = document.getElementById("card-container");
 const video = document.getElementById("video-open-booster");
+const boostercontainer = document.getElementById("video-container");
+const timeout = 300;
 
 container.addEventListener("click", (event) => {
     const clicked = event.target;
     const lastCard = container.lastElementChild;
+    const conferma = document.getElementById("conferma");
 
     if(clicked === lastCard && container.children.length > 1) {
 
-        if (clicked.tagName === "VIDEO"){
+        if(clicked.tagName === "VIDEO") {
+            clicked.play();
             return;
         }
 
-        clicked.classList.add("elemento-sfogliato");
+        clicked.classList.add("img-sfogliata");
 
         setTimeout(() => {
             clicked.remove();
 
             const newLastCard = container.lastElementChild;
-            if (newLastCard && newLastCard.tagName === "VIDEO") {
-                newLastCard.play();
+
+            if (newLastCard.id === "penultima") {
+                newLastCard.classList.add("carta-in-entrata");
+
+                newLastCard.addEventListener("animationend", () => {
+                    newLastCard.classList.remove("carta-in-entrata");
+                    newLastCard.style.opacity = 1;
+                    conferma.style.opacity = 1;
+                }, {once: true});
             }
-        }, 500);
+
+        }, timeout);
+    } else if (clicked === lastCard && conferma) {
+        window.location.href="https://forms.gle/W3KtA7xf38JEan7x5";
     }
 });
 
 video.addEventListener("ended", () => {
-    video.remove();
+
+        video.remove();
+
+    const imgs = container.querySelectorAll("img:not(#conferma):not(#penultima)");
+    
+    imgs.forEach(img => {
+        img.style.transition = "none";
+        img.style.opacity = "1";
+        img.style.pointerEvents = "auto";
+    });
+
+
+
+
+    void container.offsetHeight;
+
+    imgs.forEach(img => {
+        img.style.transition = "";
+    });
 });
