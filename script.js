@@ -13,6 +13,32 @@ window.addEventListener("DOMContentLoaded", () => {
     v.load();
 });
 
+//pointer
+const pointer = document.getElementById("clicker");
+const INACTIVITY_DELAY = 10000;
+let inactivityTimer;
+
+function showPointer() {
+    pointer.classList.add("visible");
+}
+
+function hidePointer() {
+    pointer.classList.remove("visible");
+}
+
+function resetTimer() {
+    hidePointer();
+    clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(showPointer, INACTIVITY_DELAY);
+}
+
+["click", "touchstart"].forEach(evt => {
+    window.addEventListener(evt, resetTimer, { passive: true });
+})
+
+resetTimer();
+
+//gestione sfoglio
 const container = document.getElementById("card-container");
 const video = document.getElementById("video-open-booster");
 const boostercontainer = document.getElementById("video-container");
@@ -40,10 +66,10 @@ container.addEventListener("click", (event) => {
                 newLastCard.play();
 
             } else if (newLastCard.id === "penultima") {
-                newLastCard.classList.add("carta-in-entrata");
+                newLastCard.classList.add("ill-rare-in");
 
                 newLastCard.addEventListener("animationend", () => {
-                    newLastCard.classList.remove("carta-in-entrata");
+                    newLastCard.classList.remove("ill-rare-in");
                     newLastCard.style.opacity = 1;
                     conferma.style.opacity = 1;
                 }, {once: true});
@@ -66,9 +92,6 @@ video.addEventListener("ended", () => {
         img.style.opacity = "1";
         img.style.pointerEvents = "auto";
     });
-
-
-
 
     void container.offsetHeight;
 
