@@ -6,8 +6,8 @@ window.addEventListener("DOMContentLoaded", () => {
                   (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1); // iPad moderni
 
     v.src = isIOS 
-        ? "img/PARTECIPAZIONI/booster.MOV" 
-        : "img/PARTECIPAZIONI/boosterpack-opening.webm";
+        ? "../img/PARTECIPAZIONI/booster.MOV" 
+        : "../img/PARTECIPAZIONI/boosterpack-opening.webm";
 
     v.muted = true;
     v.load();
