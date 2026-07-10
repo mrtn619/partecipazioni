@@ -4,7 +4,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(to bottom, #9EC6E6,#FFFFFF);
+    background: linear-gradient(to bottom, #7edfd5,#FFFFFF);
     overflow: hidden;
 }
 
@@ -26,7 +26,6 @@ body {
     border-radius: 12px;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0);
-    transition: transform 0.5s ease, opacity 0.5s ease;
     opacity: 0;
 }
 
@@ -37,7 +36,6 @@ body {
     height: 100%;
     border-radius: 12px;
     cursor: pointer;
-    transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
 .img-sfogliata {
@@ -73,12 +71,12 @@ body {
     height: 100px;
     border-radius: 50%;
     z-index: 9999;
-background: radial-gradient(
-    circle,
-    #ffffff 0%, #ffffff 50%,
-    transparent 70%, transparent 90%,
-    #ffffff 90%, #ffffff 100%
-);
+    background: radial-gradient(
+        circle,
+        #ffffff 0%, #ffffff 50%,
+        transparent 70%, transparent 90%,
+        #ffffff 90%, #ffffff 100%
+    );
     pointer-events: none;
     visibility: hidden;
 }
