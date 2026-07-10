@@ -67,6 +67,7 @@ body {
     max-width: 100% !important;
     border-radius: 12px;
     cursor: pointer;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
 
 .pointer{
