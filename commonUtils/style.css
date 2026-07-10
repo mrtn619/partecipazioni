@@ -15,6 +15,7 @@ body {
     text-align: center;
     position: fixed;
     display: contents;
+    perspective: 60dvw;
 } 
 
 .container img {

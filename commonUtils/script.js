@@ -66,6 +66,7 @@ container.addEventListener("click", (event) => {
                 newLastCard.play();
 
             } else if (newLastCard.id === "penultima") {
+                void newLastCard.offsetHeight;
                 newLastCard.classList.add("ill-rare-in");
 
                 newLastCard.addEventListener("animationend", () => {
