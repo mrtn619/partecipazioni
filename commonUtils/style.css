@@ -27,6 +27,7 @@ body {
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0);
     opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
 
@@ -36,6 +37,8 @@ body {
     height: 100%;
     border-radius: 12px;
     cursor: pointer;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+
 }
 
 .img-sfogliata {
