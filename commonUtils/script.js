@@ -40,6 +40,16 @@ resetTimer();
 
 //gestione sfoglio
 const container = document.getElementById("card-container");
+
+const primaCarta = container.querySelector(
+    'img[src*="1 - Presentazione.png"]'
+);
+
+if (primaCarta) {
+    primaCarta.decode().catch(() => {
+    });
+}
+
 const video = document.getElementById("video-open-booster");
 const boostercontainer = document.getElementById("video-container");
 const timeout = 300;
