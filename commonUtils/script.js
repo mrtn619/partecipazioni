@@ -76,17 +76,21 @@ container.addEventListener("click", (event) => {
                 newLastCard.play();
 
             } else if (newLastCard.id === "penultima") {
+                newLastCard.style.zIndex=2;
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
                         newLastCard.classList.add("ill-rare-in");
                     });
                 });
 
-                newLastCard.addEventListener("animationend", () => {
-                    newLastCard.classList.remove("ill-rare-in");
-                    newLastCard.style.opacity = 1;
-                    conferma.style.opacity = 1;
-                }, {once: true});
+            newLastCard.addEventListener("animationend", () => {
+                fuocoArtificio(newLastCard);
+                fuochiDietroCarta(newLastCard);
+
+                newLastCard.classList.remove("ill-rare-in");
+                newLastCard.style.opacity = 1;
+                conferma.style.opacity = 1;
+            }, { once: true });
             }
 
         }, timeout);
@@ -113,3 +117,60 @@ video.addEventListener("ended", () => {
         img.style.transition = "";
     });
 });
+
+function fuocoArtificio(carta, offsetX = 0, offsetY = 0, quantita = 75) {
+    const rect = carta.getBoundingClientRect();
+
+    const raggioMassimo = Math.hypot(
+        window.innerWidth,
+        window.innerHeight
+    ) * .42;
+
+    const origineX = rect.left + rect.width / 2 + offsetX;
+    const origineY = rect.top + rect.height / 2 + offsetY;
+
+    for (let i = 0; i < quantita; i++) {
+        const angolo = Math.random() * Math.PI * 2;
+        const distanza = 70 + Math.random() * (raggioMassimo - 70);
+
+        const spark = document.createElement("span");
+        spark.className = "fx-spark";
+
+        spark.style.left = `${origineX}px`;
+        spark.style.top = `${origineY}px`;
+        spark.style.setProperty("--x", `${Math.cos(angolo) * distanza}px`);
+        spark.style.setProperty("--y", `${Math.sin(angolo) * distanza}px`);
+        spark.style.setProperty("--colore", "#ffffff"); 
+        
+        document.body.appendChild(spark);
+
+        spark.addEventListener("animationend", () => spark.remove(), {
+            once: true
+        });
+
+        setTimeout(() => spark.remove(), 1000);
+    }
+}
+
+function fuochiDietroCarta(carta) {
+    const rect = carta.getBoundingClientRect();
+
+const punti = [
+    [-rect.width * .55, -rect.height * .45],
+    [0,                 -rect.height * .55],
+    [ rect.width * .55, -rect.height * .45],
+
+    [-rect.width * .65, 0],
+    [ rect.width * .65, 0],
+
+    [-rect.width * .55,  rect.height * .45],
+    [0,                  rect.height * .60],
+    [ rect.width * .55,  rect.height * .45]
+];
+
+    punti.forEach(([x, y], indice) => {
+        setTimeout(() => {
+            fuocoArtificio(carta, x, y, 75);
+        }, indice * 75);
+    });
+}
