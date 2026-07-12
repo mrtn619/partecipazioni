@@ -143,6 +143,9 @@ function fuocoArtificio(carta, offsetX = 0, offsetY = 0, quantita = 75) {
         spark.style.setProperty("--colore", "#ffffff"); 
         
         document.body.appendChild(spark);
+        requestAnimationFrame(() => {
+            spark.classList.add("is-animating");
+        });
 
         spark.addEventListener("animationend", () => spark.remove(), {
             once: true
@@ -170,7 +173,7 @@ const punti = [
 
     punti.forEach(([x, y], indice) => {
         setTimeout(() => {
-            fuocoArtificio(carta, x, y, 75);
+            fuocoArtificio(carta, x, y, 16);
         }, indice * 75);
     });
 }
