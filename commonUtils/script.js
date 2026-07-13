@@ -54,6 +54,127 @@ const video = document.getElementById("video-open-booster");
 const boostercontainer = document.getElementById("video-container");
 const timeout = 300;
 
+const canvasFuochi = document.createElement("canvas");
+canvasFuochi.id = "fuochi";
+document.body.appendChild(canvasFuochi);
+
+Object.assign(canvasFuochi.style, {
+    position: "fixed",
+    inset: "0",
+    width: "100%",
+    height: "100%",
+    zIndex: "1",
+    pointerEvents: "none"
+});
+
+const ctxFuochi = canvasFuochi.getContext("2d");
+let particelle = [];
+let dpr = 1;
+
+function ridimensionaFuochi() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    canvasFuochi.width = window.innerWidth * dpr;
+    canvasFuochi.height = window.innerHeight * dpr;
+
+    ctxFuochi.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+window.addEventListener("resize", ridimensionaFuochi);
+ridimensionaFuochi();
+
+function fuochiDietroCarta(carta) {
+    const rect = carta.getBoundingClientRect();
+    const raggioMassimo = Math.hypot(
+        window.innerWidth,
+        window.innerHeight
+    ) * .42;
+
+    const punti = [
+        [-rect.width * .55, -rect.height * .45],
+        [0,                 -rect.height * .55],
+        [ rect.width * .55, -rect.height * .45],
+        [-rect.width * .65, 0],
+        [ rect.width * .65, 0],
+        [-rect.width * .55,  rect.height * .45],
+        [0,                  rect.height * .60],
+        [ rect.width * .55,  rect.height * .45]
+    ];
+
+    const centroX = rect.left + rect.width / 2;
+    const centroY = rect.top + rect.height / 2;
+
+    punti.forEach(([offsetX, offsetY], indice) => {
+        setTimeout(() => {
+            for (let i = 0; i < 24; i++) {
+                const angolo = Math.random() * Math.PI * 2;
+                const distanza = 70 + Math.random() * (raggioMassimo - 70);
+
+                particelle.push({
+                    x: centroX + offsetX,
+                    y: centroY + offsetY,
+                    dx: Math.cos(angolo) * distanza,
+                    dy: Math.sin(angolo) * distanza,
+                    dimensione: 2 + Math.random() * 3,
+                    durata: 650 + Math.random() * 250,
+                    inizio: performance.now()
+                });
+            }
+
+            animaFuochi(); // qui, dopo aver creato le particelle
+        }, indice * 70);
+    });
+
+}
+
+let fuochiAttivi = false;
+
+function animaFuochi() {
+    if (fuochiAttivi) return;
+    fuochiAttivi = true;
+
+    function frame(ora) {
+        ctxFuochi.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+        particelle = particelle.filter(p => {
+            const progresso = (ora - p.inizio) / p.durata;
+
+            if (progresso >= 1) return false;
+
+            const opacita = 1 - progresso;
+            const x = p.x + p.dx * progresso;
+            const y = p.y + p.dy * progresso + 80 * progresso * progresso;
+
+            ctxFuochi.save();
+            ctxFuochi.globalAlpha = opacita;
+            ctxFuochi.fillStyle = "#ffffff";
+            ctxFuochi.shadowColor = "#ffffff";
+            ctxFuochi.shadowBlur = 14;
+
+            ctxFuochi.beginPath();
+            ctxFuochi.arc(
+                x,
+                y,
+                p.dimensione * (1 - progresso * .55),
+                0,
+                Math.PI * 2
+            );
+            ctxFuochi.fill();
+            ctxFuochi.restore();
+
+            return true;
+        });
+
+        if (particelle.length > 0) {
+            requestAnimationFrame(frame);
+        } else {
+            fuochiAttivi = false;
+        }
+    }
+
+    requestAnimationFrame(frame);
+}
+
 container.addEventListener("click", (event) => {
     const clicked = event.target;
     const lastCard = container.lastElementChild;
@@ -84,7 +205,6 @@ container.addEventListener("click", (event) => {
                 });
 
             newLastCard.addEventListener("animationend", () => {
-                fuocoArtificio(newLastCard);
                 fuochiDietroCarta(newLastCard);
 
                 newLastCard.classList.remove("ill-rare-in");
@@ -117,63 +237,3 @@ video.addEventListener("ended", () => {
         img.style.transition = "";
     });
 });
-
-function fuocoArtificio(carta, offsetX = 0, offsetY = 0, quantita = 75) {
-    const rect = carta.getBoundingClientRect();
-
-    const raggioMassimo = Math.hypot(
-        window.innerWidth,
-        window.innerHeight
-    ) * .42;
-
-    const origineX = rect.left + rect.width / 2 + offsetX;
-    const origineY = rect.top + rect.height / 2 + offsetY;
-
-    for (let i = 0; i < quantita; i++) {
-        const angolo = Math.random() * Math.PI * 2;
-        const distanza = 70 + Math.random() * (raggioMassimo - 70);
-
-        const spark = document.createElement("span");
-        spark.className = "fx-spark";
-
-        spark.style.left = `${origineX}px`;
-        spark.style.top = `${origineY}px`;
-        spark.style.setProperty("--x", `${Math.cos(angolo) * distanza}px`);
-        spark.style.setProperty("--y", `${Math.sin(angolo) * distanza}px`);
-        spark.style.setProperty("--colore", "#ffffff"); 
-        
-        document.body.appendChild(spark);
-        requestAnimationFrame(() => {
-            spark.classList.add("is-animating");
-        });
-
-        spark.addEventListener("animationend", () => spark.remove(), {
-            once: true
-        });
-
-        setTimeout(() => spark.remove(), 1000);
-    }
-}
-
-function fuochiDietroCarta(carta) {
-    const rect = carta.getBoundingClientRect();
-
-const punti = [
-    [-rect.width * .55, -rect.height * .45],
-    [0,                 -rect.height * .55],
-    [ rect.width * .55, -rect.height * .45],
-
-    [-rect.width * .65, 0],
-    [ rect.width * .65, 0],
-
-    [-rect.width * .55,  rect.height * .45],
-    [0,                  rect.height * .60],
-    [ rect.width * .55,  rect.height * .45]
-];
-
-    punti.forEach(([x, y], indice) => {
-        setTimeout(() => {
-            fuocoArtificio(carta, x, y, 16);
-        }, indice * 75);
-    });
-}
