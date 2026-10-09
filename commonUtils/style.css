@@ -77,6 +77,11 @@ body {
     cursor: pointer;
 }
 
+#video-open-booster-2 {
+    box-shadow: none;
+    filter: none;
+}
+
 .pointer{
     width: 100px;
     height: 100px;
