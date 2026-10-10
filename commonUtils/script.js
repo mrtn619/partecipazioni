@@ -210,6 +210,7 @@ function mostraCartaSuccessiva() {
     if (!newLastCard) return;
 
     if (newLastCard.tagName === "VIDEO") {
+        newLastCard.style.visibility = "visible";
         newLastCard.play();
 
     } else if (newLastCard.id === "penultima") {

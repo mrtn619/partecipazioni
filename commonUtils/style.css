@@ -27,7 +27,7 @@ body {
     max-height: 48.30365%;
     border-radius: 12px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0);
+    /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0); */
     opacity: 0;
     transition: transform 0.5s ease, opacity 0.5s ease;
     -webkit-user-select: none;
@@ -46,7 +46,15 @@ body {
     border-radius: 12px;
     cursor: pointer;
     transition: transform 0.5s ease, opacity 0.5s ease;
+    box-shadow: none;
 
+}
+
+#video-open-booster,
+#video-open-booster-2 {
+    visibility: hidden;
+    box-shadow: none;
+    filter: none;
 }
 
 .img-sfogliata {
@@ -75,11 +83,6 @@ body {
     max-width: 100% !important;
     border-radius: 12px;
     cursor: pointer;
-}
-
-#video-open-booster-2 {
-    box-shadow: none;
-    filter: none;
 }
 
 .pointer{
